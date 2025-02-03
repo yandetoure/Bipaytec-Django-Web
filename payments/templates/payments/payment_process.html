@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parcours de Paiement</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex flex-col items-center p-6">
+    <header class="w-full flex justify-center mb-6">
+        <img src="https://via.placeholder.com/150" alt="Logo Consulting" class="h-16">
+    </header>
+    
+    <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
+        <h2 class="text-xl font-bold text-center mb-4">Parcours de Paiement</h2>
+        
+        <div id="step1" class="step active">
+            <h3 class="text-lg font-semibold mb-2">Étape 1: Saisissez votre référence client</h3>
+            <input type="text" id="clientRef" placeholder="Référence client" class="w-full p-2 border rounded-md mb-4">
+            <button class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600" onclick="nextStep(2)">Suivant</button>
+        </div>
+        
+        <div id="step2" class="step hidden">
+            <h3 class="text-lg font-semibold mb-2">Étape 2: Choisissez les factures à payer</h3>
+            <div id="invoiceList" class="mb-4">
+                <label class="block"><input type="checkbox" value="Facture 1 - 50€"> Facture 1 - 50€</label>
+                <label class="block"><input type="checkbox" value="Facture 2 - 75€"> Facture 2 - 75€</label>
+                <label class="block"><input type="checkbox" value="Facture 3 - 100€"> Facture 3 - 100€</label>
+            </div>
+            <button class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600" onclick="nextStep(3)">Suivant</button>
+        </div>
+        
+        <div id="step3" class="step hidden">
+            <h3 class="text-lg font-semibold mb-2">Étape 3: Récapitulatif et Confirmation</h3>
+            <p id="recap" class="mb-4"></p>
+            <button class="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600" onclick="confirmPayment()">Confirmer le paiement</button>
+        </div>
+        
+        <div id="step4" class="step hidden">
+            <h3 class="text-lg font-semibold mb-2">Étape 4: Résumé de la transaction</h3>
+            <p class="text-green-600 font-bold">Votre paiement a été effectué avec succès.</p>
+        </div>
+    </div>
+    
+    <script>
+        function nextStep(step) {
+            document.querySelectorAll('.step').forEach(el => el.classList.add('hidden'));
+            document.getElementById('step' + step).classList.remove('hidden');
+            
+            if (step === 3) {
+                const ref = document.getElementById('clientRef').value;
+                const selectedInvoices = Array.from(document.querySelectorAll('#invoiceList input:checked'))
+                    .map(el => el.value).join(', ');
+                document.getElementById('recap').innerText = `Référence client: ${ref}\nFactures sélectionnées: ${selectedInvoices}`;
+            }
+        }
+
+        function confirmPayment() {
+            nextStep(4);
+        }
+    </script>
+</body>
+</html>
